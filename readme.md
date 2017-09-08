@@ -316,3 +316,12 @@ npm run dev-start
 ```
 
 ## Closing / Questions (15 min / 2:00)
+
+## Resources
+
+**Microservice Solution**
+- Back-End: https://github.com/ga-wdi-exercises/react-translator-api/tree/microservice-solution
+- Front-End: https://github.com/ga-wdi-exercises/react-translator/tree/mern-starter
+
+**Single-Server Solution**
+- Back-End: https://github.com/ga-wdi-exercises/react-translator-api/tree/single-server-solution
