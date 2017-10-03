@@ -46,8 +46,6 @@ API data.
     manage one deployment.
     - Unified Codebase: Since our front-end and back-end will be housed in the same Git repo,
     we will always have a more full picture of the application than if they were in separate repos.
-    Our front-end developers can check our back-end API endpoints and our back-end developers can see
-    how the data is being used on the front-end.
     - No CORS: Since our front-end application will be making requests back to the same
     domain that served it up (its 'origin'), we do not need to configure CORS.
   - **Cons**
@@ -69,7 +67,7 @@ Today, we will be using the React Translator app that used the IBM Watson API to
 1. First, clone down the back-end, install dependencies, and open in atom:
 
     ```bash
-    git clone git@github.com:ga-wdi-exercises/react-translator-api.git
+    git clone git@git.generalassemb.ly:ga-wdi-exercises/react-translator-api.git
     cd react-translator-api
     npm install
     atom .
@@ -102,7 +100,7 @@ Today, we will be using the React Translator app that used the IBM Watson API to
 1. In a **separate** terminal window, clone down the React Translator app, checkout to the `mern-starter` branch, install dependencies, and open in atom:
 
     ```bash
-    git clone git@github.com:ga-wdi-exercises/react-translator.git
+    git clone git@git.generalassemb.ly:ga-wdi-exercises/react-translator.git react-translator
     cd react-translator
     git checkout mern-starter
     npm install
@@ -320,8 +318,8 @@ npm run dev-start
 ## Resources
 
 **Microservice Solution**
-- Back-End: https://github.com/ga-wdi-exercises/react-translator-api/tree/microservice-solution
+- Back-End: https://git.generalassemb.ly/ga-wdi-exercises/react-translator-api/tree/microservice-solution
 - Front-End: https://github.com/ga-wdi-exercises/react-translator/tree/mern-starter
 
 **Single-Server Solution**
-- Back-End: https://github.com/ga-wdi-exercises/react-translator-api/tree/single-server-solution
+- Back-End: https://git.generalassemb.ly/ga-wdi-exercises/react-translator-api/tree/single-server-solution
