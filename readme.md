@@ -1,6 +1,11 @@
 # Building a MERN App
 
+## Quick References
+
+- [Deploying a Node-Express-Mongoose App/API with Heroku & MLab](https://git.generalassemb.ly/ga-wdi-lessons/express-mongoose-mlab-deploy)
+
 ## Learning Objectives (5 min / 0:05)
+
 - Describe the difference between single-server and multi-server configurations
 for an application built in the MERN stack
 - Install and use `cors` to allow for Cross-Origin Resource Sharing between our
@@ -13,6 +18,7 @@ project
 - Set up our back-end API to serve static `build` assets in production
 
 ## Framing (10 min / 0:15)
+
 To integrate React with a back-end framework (such as Express) we will need to make
 a few decisions about the desired architecture of our application. The first primary
 decision to make is where we want our front-end application to be served from. There
@@ -97,11 +103,11 @@ Today, we will be using the React Translator app that used the IBM Watson API to
 
 ### Front-End Setup
 
-1. In a **separate** terminal window, clone down the React Translator app, checkout to the `mern-starter` branch, install dependencies, and open in atom:
+1. In a ***separate terminal window***, clone down the React Translator app, checkout to the `mern-starter` branch, install dependencies, and open in atom:
 
     ```bash
-    git clone git@git.generalassemb.ly:ga-wdi-exercises/react-translator.git react-translator
-    cd react-translator
+    git clone git@git.generalassemb.ly:ga-wdi-exercises/react-translator.git react-translator-front-end
+    cd react-translator-front-end
     git checkout mern-starter
     npm install
     atom .
