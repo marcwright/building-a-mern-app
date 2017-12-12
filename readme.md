@@ -4,7 +4,7 @@
 
 - [Deploying a Node-Express-Mongoose App/API with Heroku & MLab](https://git.generalassemb.ly/ga-wdi-lessons/express-mongoose-mlab-deploy)
 
-## Learning Objectives (5 min / 0:05)
+## Learning Objectives (5 min / 2:35)
 
 - Describe the difference between single-server and multi-server configurations
 for an application built in the MERN stack
@@ -17,7 +17,7 @@ project
 - Set up our front-end development server to proxy requests to our back-end server
 - Set up our back-end API to serve static `build` assets in production
 
-## Framing (10 min / 0:15)
+## Framing (10 min / 2:45)
 
 To integrate React with a back-end framework (such as Express) we will need to make
 a few decisions about the desired architecture of our application. The first primary
@@ -42,7 +42,7 @@ back-end across separate domains.
     for the browser to allow our front-end to retrieve data from our back-end  
 
 
-**Single-Server Configuration** - our front-end application will be housed in the same
+**Single-Server (Monolithic) Configuration** - our front-end application will be housed in the same
 repository as our back-end code. They will be deployed together to a single server where
 our back-end will be responsible for serving up our front-end application in addition to our
 API data.
@@ -64,7 +64,7 @@ API data.
 
 Today, we will walk through setting up and deploying our application up first on separate servers, then examine how to combine them into one project and deploy onto a single server.
 
-## Getting Started (10 min / 0:25)
+## Getting Started (10 min / 0:55)
 
 Today, we will be using the React Translator app that used the IBM Watson API to translate text and provide audio pronunciations. We will also be using a Mongoose / Express back-end to allow for users to save translations.
 
@@ -123,7 +123,16 @@ Today, we will be using the React Translator app that used the IBM Watson API to
 3. Navigate to `localhost:3000` to explore the application
 
 
-## Two-Server (Microservice) Architecture (25 min / 0:50)
+## Application Dive (5 min / 3:00)
+
+With a partner, take 5 min to look through our back-end and front-end apps.  Try to answer the following questions.
+* What npm packages are we using?
+* What are the properties for our model?
+* What components are we using in React and how are they nested?
+* What CRUD functionality is currently available to us on the back-end?
+* Where is the front-end making calls to our back-end?
+
+## Two-Server (Microservice) Architecture (30 min / 3:30)
 
 Currently we are using this type of architecture. Our back-end is running on `localhost:3001`
 while our front-end is running on `localhost:3000`. One way to say this is that these applications
@@ -219,9 +228,9 @@ surge
 > [Surge](https://surge.sh/) is a CLI based npm package that lets you quickly deploy static front-end
 applications for free.
 
-## Break (10 min / 1:00)
+## Break (10 min / 3:40)
 
-## Single-Server Architecture (45 min / 1:45)
+## Single-Server Architecture (45 min / 4:25)
 
 Now let's look at how we could consolidate our front-end and back-end into one project and deploy them together to one server. First, let's copy our React Translator app into our API repo:
 
@@ -293,6 +302,10 @@ Then run `npm start` within client and navigate to `localhost:3000` in your brow
 
 We will still need to run `npm run build` inside of `client` whenever we want to update our static production
 code in `build`, but for quickly iterating in development, we now can quickly see our updates rendered.
+
+## Bonus: Run through MLab Deployment
+
+[Deploying a Node-Express-Mongoose App/API with Heroku & MLab](https://git.generalassemb.ly/ga-wdi-lessons/express-mongoose-mlab-deploy)
 
 ## Bonus: Create Script to Start Up in Development
 
