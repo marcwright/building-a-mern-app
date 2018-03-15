@@ -24,45 +24,48 @@ a few decisions about the desired architecture of our application. The first pri
 decision to make is where we want our front-end application to be served from. There
 are two primary options:
 
-**Multi-Server (Microservice) Configuration** - our front-end application and back-end
-API will be completely separate. They will each have their own Git repositories and will
-be deployed independently to different servers. Our front-end will retrieve data from our
-back-end across separate domains.
+**Multi-Server (Microservice) Configuration** 
+
+- front-end and back-end will be completely separate
+- have their own Git repositories and will be deployed independently to different servers
+- front-end will retrieve data from our back-end across separate domains
 
   **Pros**
-    - Separation of Concerns: Our application is more modular and our front-end
-    and back-end developers can work on their parts of the application independently
-    of each other.
-    - Specialized Configuration: Since our front-end and API will be housed on separate
-    servers, we can optimize server configuration for each one independently, allowing them
-    to scale independently of each other and preventing them from competing over the same
-    server resources.
+    - Separation of Concerns: 
+    	- Modularizing the different parts of an app makes it easier for each team to work on each part separately
+    - Specialized Configuration: 
+    	- Can individually optimize the servers; and scale them separately, not having them compete within the same server capacity
+    	
   **Cons**
-    - Since requests will be sent across separate domains, we will have to configure CORS (Cross-Origin Resource Sharing) for the browser to allow our front-end to retrieve data from our back-end  
+    
+    - Configure CORS (cross-origin resouce sharing):
+    	- Have to specifically configure CORS so that front-end can retrieve data from back-end
 
 
-**Single-Server (Monolithic) Configuration** - our front-end application will be housed in the same
-repository as our back-end code. They will be deployed together to a single server where
-our back-end will be responsible for serving up our front-end application in addition to our
-API data.
+**Single-Server (Monolithic) Configuration** 
+
+- the front-end and back end are in the same
+repository
+- deployed together to a single server
+- back-end will be responsible for serving up our front-end application in addition to our API data.
 
   **Pros**
-    - Single Deployment: Since our front-end will be served up by our API, we only need to
-    manage one deployment.
-    - Unified Codebase: Since our front-end and back-end will be housed in the same Git repo,
-    we will always have a more full picture of the application than if they were in separate repos.
-    - No CORS: Since our front-end application will be making requests back to the same
-    domain that served it up (its 'origin'), we do not need to configure CORS.
+    - Single Deployment:
+    	- only need to manage one deployment
+    - Unified Codebase: 
+    	- when all code is stored in one place, it is easier to check on or reference other parts of the code base
+    	- fuller picture of the application
+    - No CORS:
+    	- don't need to configure CORS
+    
   **Cons**
-    - We will have to modify our server to serve up both json data for the API endpoints
-    and the assets of our front-end which could require additional configuration and cause
-    the two to compete over server resources.
+  
+    - Server configuration:
+    	- We will have to configure the server so that the back-end can serve up json data, and front-end can serve up the views
+    	- may leave the front end and back end competing over server resources
 
 Today, we will walk through setting up and deploying our application up first on separate servers, then examine how to combine them into one project and deploy onto a single server.
 
-## Getting Started (10 min / 0:55)
-
-Today, we will be using the React Translator app that used the IBM Watson API to translate text and provide audio pronunciations. We will also be using a Mongoose / Express back-end to allow for users to save translations.
 
 ### Back-End Setup
 
@@ -106,7 +109,7 @@ Today, we will be using the React Translator app that used the IBM Watson API to
     cd react-translator
     git checkout mern-starter
     npm install
-    code .
+    atom .
     ```
 
 2. Start the development server:
@@ -169,55 +172,49 @@ our front end is not allowed to retrieve data from it. To fix this, we need to c
 
 Now when you navigate to `localhost:3000/translations`, you should see a list of
 the translations being retrieved from our API.
-> Note: The default `cors` configuration (above) will allow requests from **any** origin (which may or may not be ideal). To more precisely control access to our API, we would need to do little more configuration. Check out the [cors documentation](https://www.npmjs.com/package/cors) for more information on this process.
+
+**Note:** 
+
+- This configuration will allow requests from **any** origin (which may not be ideal). 
+- You can be more precise about what sites can call to the API.
+- Check out the [cors documentation](https://www.npmjs.com/package/cors) for more information on this configuration.
 
 ### Deploying to Separate Domains
 
-Now that our front end and back end are communicating properly, let's look at how we would
-deploy them.
+Now that our front end and back end are communicating properly, let's look at how we would deploy them.
 
 #### Back End Deployment
 
 As our back-end will need to be hosted on a server and host a database, we will want
 to deploy it to a hosting service like Heroku. 
 
-We would go about this is [no differently
-than we have previously](https://git.generalassemb.ly/ga-wdi-lessons/express-mongoose-mlab-deploy).
+We would go about this is no differently
+than we have previously. First, we will want to set up our index.js file with:
 
-Check out a branch that has this set up:
+```js
+app.set('port', process.env.PORT || 3001)
 
+app.listen(app.get('port'), () => {
+  console.log('Server listening on port ' + app.get('port'))
+})
+```
+**Instead of doing this, we can just check out a branch that has this set up for us:**
 ```bash
 git checkout microservice-solution
 ```
 
-If you open the code, you'll see it has the index.js file set up with the port environment variable and the connection.js file set up to connect with an mLab database.
+Then, we'll:
 
 ```bash
 heroku create react-translator-api
-```
-> Note: `heroku create` creates the application and sets up the remote [(documentation on this)](https://devcenter.heroku.com/articles/creating-apps)
-
-Next, we want to create a new database on [mLab](https://mlab.com/home). Once you've created a new database, create a user for that database. Then, in your terminal (inserting the data for your mLab db):
-
-```bash
-heroku config:set MLAB_URL=mongodb://<your_user_login>:<your_user_password>@ds015760.mlab.com:15760/<your_db_name>
+git push heroku master
 ```
 
-Then we set up our database on mLab. Then, push our app to Heroku:
+> Note: Heroku will require some additional configuration to host a MongoDB database.
+It will prompt you to set up with a cloud hosting service [mLab](https://mlab.com/welcome/?gclid=EAIaIQobChMI5tT3qfiV1gIVTjPTCh3tlAM7EAAYASAAEgIRkfD_BwE).
+For details on this, check out the [Heroku Documentation](https://devcenter.heroku.com/articles/mongolab).
 
-```bash
-git push heroku microservice-solution:master
-```
-
-Then seed the database:
-
-```bash
-heroku run node db/seeds.js
-```
-
-
-> Note: You will need to set up your MongoDB using cloud hosting service [mLab](https://mlab.com/welcome/?gclid=EAIaIQobChMI5tT3qfiV1gIVTjPTCh3tlAM7EAAYASAAEgIRkfD_BwE). For more details on this, check out the [Heroku Documentation](https://devcenter.heroku.com/articles/mongolab).
-
+**if you are deploying a front-end that previously made API calls to a local server, you will want to update the API link to the newly deployed Heroku link**
 
 #### Front-End Deployment
 
@@ -226,17 +223,17 @@ Currently, when we start our React application locally, we are using `react-scri
 - Configuration: Configuration files for the above dependencies that control (among other things) how our app is compiled in both development and production environment.
 - Scripts: Commands that allow us to do things like start our Webpack server (`react-scripts start`) or create a compiled, minified version of our application (in vanilla JS) that can be deployed (`react-scripts build`).
 
-> Source code on `react-scripts` [here](https://github.com/facebook/create-react-app/tree/master/packages/react-scripts).
-
 The command that we will need to use for deploying our front-end is `react-scripts build`. `create-react-app` automatically aliases this for us in our `package.json` as `npm run build`. In the terminal, run this command to create a deployment-ready version of your app:
 
 ```bash
 npm run build
 ```
 
-This will create a directory called `build` in the root of your application. This directory contains all of your application's HTML, minified JS, and minified CSS in a deployment-ready format.
+- This will create a directory called `build` in the root of your application - it contains all of your application's HTML, JS, and CSS in a deployment-ready format.
 
-Now all you would need to do is to deploy **the build directory** to a static asset hosting service (such as [GitHub Pages](https://pages.github.com/) or [surge](https://surge.sh/).
+- Now we can deploy **the build directory** to a static asset hosting service (such as [GitHub Pages](https://pages.github.com/), which we did for our Project 1.
+
+- We are going to deploy to a simple front-end deployment platform called **Surge**.
 
 If pushing to gh-pages:
 
@@ -246,20 +243,25 @@ git subtree push --prefix build origin master:gh-pages
 > Note that `subtree` allows us to only push a sub-directory of our repository instead
 of the entire app. [More Information](https://gist.github.com/cobyism/4730490)
 
+**WHAT WE ARE DOING:**
+
 If using surge:
 ```bash
-cd build
 npm install -g surge
+cd build
 surge
 ```
 
-> Note: You need to `cd build` to enter the build directory that you just created, so that surge will deploy that specific folder.
 > [Surge](https://surge.sh/) is a CLI based npm package that lets you quickly deploy static front-end
 applications for free.
+> Note: You need to `cd build` to enter the build directory that you just created, so that surge will deploy that specific folder.
+
 
 ## Break (10 min / 3:40)
 
 ## Single-Server Architecture (45 min / 4:25)
+
+**Don't have to follow along if you don't want to mess with the setup you just created. We will typically use two-server architecture.**
 
 Now let's look at how we could consolidate our front-end and back-end into one project and deploy them together to one server. First, let's copy our React Translator app into our API repo:
 
@@ -267,7 +269,8 @@ From the root of the `react-translator-api` directory, run:
 ```bash
 cp -r <path to the `react-translator` directory> ./client
 ```
-> Note that we are both copying the front-end repo to our root folder while simultaneously renaming it to `client`
+> Note that we are both copying the front-end repo to our root folder while
+simultaneously renaming it to `client`
 
 ### Configuring Express to Serve Static Assets
 
@@ -281,9 +284,7 @@ app.get('/', (req, res) => {
 })
 ```
 
-Now when we navigate to `localhost:3001`, we will see errors in the console saying that
-the browser cannot load our minified JS and CSS files. To fix this, we need to tell express
-where to look for static assets:
+Now when we navigate to `localhost:3001`, we will see errors in the console saying that the browser cannot load our minified JS and CSS files. To fix this, we need to tell express where to look for static assets:
 
 In `index.js`
 ```js
@@ -325,13 +326,15 @@ In `client/package.json`, add this line:
 ```json
 "proxy": "http://localhost:3001/"
 ```
- 
+
 Then run `npm start` within client and navigate to `localhost:3000` in your browser. Our data is being successfully retrieved!
 
 We will still need to run `npm run build` inside of `client` whenever we want to update our static production
 code in `build`, but for quickly iterating in development, we now can quickly see our updates rendered.
 
-## Closing / Questions (15 min / 2:00)
+## Closing / Questions (15 min / 5:00)
+
+**Solutions for what we just worked on are in the resources below!**
 
 ## Resources
 
